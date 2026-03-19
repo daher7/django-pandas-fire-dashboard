@@ -1,4 +1,4 @@
-🌲 FireData: Análisis de Incendios Forestales en España (2010-2020)
+🌲 FireData: Análisis de Incendios Forestales en España (1968-2020)
 
 FireData es una plataforma integral para el monitoreo y análisis del impacto de los incendios forestales en España. El proyecto abarca desde la limpieza de datos crudos con Pandas hasta la exposición de una API de alto rendimiento y la visualización en un Dashboard interactivo con Django.
 📂 Estructura del Repositorio
