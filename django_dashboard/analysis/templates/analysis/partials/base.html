@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FireWatch AI{% endblock title %}</title>
+    
+    <!-- Fuente moderna para dashboards -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tu CSS personalizado -->
+    <link rel="stylesheet" href="{% static 'analysis/css/style.css' %}">
+</head>
+<body>
+
+    <!-- La navegación se queda FUERA de los bloques para que sea persistente -->
+    <nav class="navbar">
+        <a href="{% url 'inicio' %}" class="nav-logo">FIREWATCH.IO</a>
+        
+        <div class="nav-links">
+            <a href="{% url 'inicio' %}">Principal</a>
+            <a href="{% url 'estadisticas' %}">Estadísticas</a>
+            <a href="{% url 'mapa' %}">Mapa</a>
+            <a href="{% url 'metodologia' %}">Metodología</a>
+        </div>
+
+        <div class="api-status">
+            <span class="dot"></span>
+            <span>API CONNECTED</span>
+        </div>
+    </nav>
+
+    <!-- El bloque content es SOLO para lo que cambia en cada página -->
+    <main class="main-container">
+        {% block content %}
+        <!-- Aquí se inyectará el contenido de inicio.html, prueba_api, etc. -->
+        {% endblock content %}
+    </main>
+
+    <!-- Espacio para scripts si los necesitas en el futuro -->
+    {% block extra_js %}{% endblock extra_js %}
+
+
+
+
+
+
+    <footer class="main-footer">
+    <div class="footer-container">
+        <!-- Izquierda: Logo y descripción breve -->
+        <div class="footer-section-brand">
+            <span class="nav-logo" style="font-size: 1rem;">FIRE<span class="text-orange">DATA</span></span>
+            <p>Análisis de incendios forestales en España (2010-2020). Datos oficiales actualizados.</p>
+        </div>
+        
+        <!-- Centro: Enlaces rápidos -->
+        <ul class="footer-links">
+            <li><a href="#">Metodología</a></li>
+            <li><a href="#">Fuentes</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+
+        <!-- Derecha: Copyright / Estado -->
+        <div class="footer-bottom-mini">
+            <div class="api-status" style="justify-content: flex-end; margin-bottom: 4px;">
+                <span class="dot"></span> Sistema Operativo
+            </div>
+            <span>&copy; 2026 FireData Project</span>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

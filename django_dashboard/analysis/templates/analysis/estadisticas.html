@@ -1,0 +1,118 @@
+{% extends "analysis/partials/base.html" %}
+
+{% block content %}
+<div class="container methodology-style">
+    
+    <header class="metodologia-header text-center">
+        <div class="status-badge">PANEL DE ANÁLISIS HISTÓRICO</div>
+        <h2>Estadísticas de Incendios Forestales</h2>
+        <p class="lead text-muted">Visualización de datos oficiales sobre incendios en España (1968-2020).</p>
+    </header>
+
+    <!-- 01. EVOLUCIÓN TEMPORAL -->
+    <div class="fase-card card-full">
+        <div class="fase-card-header pt-4">
+            <h5 class="text-muted fw-bold">01. EVOLUCIÓN TEMPORAL</h5>
+            <h3 class="text-orange">Superficie Quemada Anual (ha)</h3>
+            <p class="text-secondary mt-2">
+                Representación de la superficie forestal afectada anualmente medida en hectáreas. La serie permite observar la fluctuación de la extensión dañada a lo largo de las cinco décadas registradas en la base de datos.
+            </p>
+        </div>
+        <div class="fase-card-body">
+            {{ chart_tiempo|safe }}
+        </div>
+    </div>
+
+    <!-- FILA: 02 ORIGEN Y 04 GRAVEDAD -->
+    <div class="stats-row">
+        <!-- 03. ORIGEN Y CAUSAS -->
+        <div class="fase-card card-half">
+            <div class="fase-card-header pt-4">
+                <h5 class="text-muted fw-bold">02. ORIGEN Y CAUSAS</h5>
+                <h3 class="text-orange">Desglose por Causalidad</h3>
+                <p class="text-secondary mt-2 small">
+                    Distribución porcentual de los incendios según su origen documentado, clasificándolos en categorías como intencionados, rayos, negligencias, accidentes o causas desconocidas.
+                </p>
+            </div>
+            <div class="fase-card-body">
+                <div class="donut-container">
+                    {{ chart_causas|safe }}
+                </div>
+            </div>
+        </div>
+
+        <!-- 04. RELACIÓN CANTIDAD VS TAMAÑO -->
+        <div class="fase-card card-wide">
+            <div class="fase-card-header pt-4">
+                <h5 class="text-muted fw-bold">03. RELACIÓN CANTIDAD VS TAMAÑO</h5>
+                <h3 class="text-orange">Frecuencia y Superficie Media</h3>
+                <p class="text-secondary mt-2 small">
+                    Comparativa entre el número total de siniestros ocurridos cada año (barras) y el tamaño medio de la superficie afectada por cada incendio (línea), permitiendo ver la relación entre ambos indicadores.
+                </p>
+            </div>
+            <div class="fase-card-body">
+                {{ chart_gravedad|safe }}
+            </div>
+        </div>
+    </div>
+
+    <!-- 02. ESTACIONALIDAD -->
+    <div class="fase-card card-full">
+        <div class="fase-card-header pt-4">
+            <h5 class="text-muted fw-bold">04. ESTACIONALIDAD</h5>
+            <h3 class="text-orange">Distribución Mensual de Incendios</h3>
+            <p class="text-secondary mt-2">
+                Recuento acumulado de siniestros agrupados por meses. Muestra los periodos del año donde se registra una mayor o menor concentración de focos de incendio de forma recurrente.
+            </p>
+        </div>
+        <div class="fase-card-body">
+            {{ chart_mes|safe }}
+        </div>
+    </div>
+
+    <!-- 05. GEOGRAFÍA -->
+    <div class="fase-card card-full">
+        <div class="fase-card-header pt-4">
+            <h5 class="text-muted fw-bold">05. GEOGRAFÍA DEL FUEGO</h5>
+            <h3 class="text-orange">Top 20 Provincias con Mayor Superficie Afectada</h3>
+            <p class="text-secondary mt-2">
+                Ranking de las veinte provincias españolas que han registrado una mayor cantidad de hectáreas quemadas en el cómputo total de la serie histórica analizada.
+            </p>
+        </div>
+        <div class="fase-card-body">
+            {{ chart_top_provincias|safe }}
+        </div>
+    </div>
+
+    <hr class="separator">
+
+    <!-- 06. RANKING DE TRAGEDIAS -->
+    <div class="tabla-stats-wrapper">
+        <h3 class="text-orange"><i class="fas fa-exclamation-circle me-2"></i> Registro de Mortalidad</h3>
+        <p class="text-center text-secondary mb-4">
+            Listado detallado de los siniestros que han ocasionado víctimas mortales, indicando el año de ocurrencia, la provincia afectada y el número total de fallecidos registrados en el evento.
+        </p>
+        <div class="tabla-container">
+            <table class="table-compact">
+                <thead>
+                    <tr>
+                        <th>AÑO</th>
+                        <th>PROVINCIA</th>
+                        <th class="text-right">VÍCTIMAS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in victimas %}
+                    <tr>
+                        <td class="bold">{{ v.anio }}</td>
+                        <td class="text-muted">{{ v.provincia }}</td>
+                        <td class="text-orange bold text-right">{{ v.muertos }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

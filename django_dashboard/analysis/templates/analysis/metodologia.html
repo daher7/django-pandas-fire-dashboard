@@ -1,0 +1,89 @@
+{% extends "analysis/partials/base.html" %}
+
+{% block content %}
+<div class="container methodology-style">
+    
+    <!-- CABECERA DE LA SECCIÓN -->
+    <header class="metodologia-header text-center mb-5">
+        <div class="status-badge">DOCUMENTACIÓN TÉCNICA</div>
+        <h2 class="text-orange">Arquitectura del Sistema</h2>
+        <p class="lead text-muted">
+            FireWatch AI opera bajo una infraestructura distribuida, separando el almacenamiento, el servicio de datos y la interfaz de usuario.
+        </p>
+    </header>
+
+    <!-- CONTENEDOR DE TARJETAS VERTICALES (UNA AL LADO DE LA OTRA) -->
+    <div class="fases-grid-vertical">
+
+        <!-- FASE 01: EXTRACCIÓN -->
+        <div class="fase-card card-vertical">
+            <span class="fase-number">01</span>
+            <div class="fase-card-header">
+                <h3 class="text-orange">Extracción</h3>
+            </div>
+            <div class="fase-card-body">
+                <p class="text-secondary">
+                    Obtención de registros brutos desde el dataset histórico y procesamiento inicial mediante la librería <strong>Pandas</strong> para la normalización de variables.
+                </p>
+            </div>
+        </div>
+
+        <!-- FASE 02: PERSISTENCIA -->
+        <div class="fase-card card-vertical">
+            <span class="fase-number">02</span>
+            <div class="fase-card-header">
+                <h3 class="text-orange">Persistencia</h3>
+            </div>
+            <div class="fase-card-body">
+                <p class="text-secondary">
+                    Almacenamiento en base de datos relacional <strong>SQLite</strong>, estructurando la información en tablas normalizadas de incendios y provincias.
+                </p>
+            </div>
+        </div>
+
+        <!-- FASE 03: CAPA DE API -->
+        <div class="fase-card card-vertical">
+            <span class="fase-number">03</span>
+            <div class="fase-card-header">
+                <h3 class="text-orange">Capa de API</h3>
+            </div>
+            <div class="fase-card-body">
+                <p class="text-secondary">
+                    Construcción de una <strong>API REST</strong> independiente con <strong>FastAPI</strong> que consulta la base de datos y sirve los datos en formato JSON.
+                </p>
+            </div>
+        </div>
+
+        <!-- FASE 04: CONSUMO -->
+        <div class="fase-card card-vertical">
+            <span class="fase-number">04</span>
+            <div class="fase-card-header">
+                <h3 class="text-orange">Consumo</h3>
+            </div>
+            <div class="fase-card-body">
+                <p class="text-secondary">
+                    El backend de <strong>Django</strong> actúa como cliente, consumiendo los endpoints de la API de FastAPI para procesar la lógica de negocio.
+                </p>
+            </div>
+        </div>
+
+        <!-- FASE 05: VISUALIZACIÓN -->
+        <div class="fase-card card-vertical">
+            <span class="fase-number">05</span>
+            <div class="fase-card-header">
+                <h3 class="text-orange">Visualización</h3>
+            </div>
+            <div class="fase-card-body">
+                <p class="text-secondary">
+                    Generación de componentes visuales mediante <strong>Plotly</strong>, renderizando mapas y gráficos dinámicos integrados en la interfaz de usuario.
+                </p>
+            </div>
+        </div>
+
+    </div> <!-- Fin del grid vertical -->
+
+    <!-- SEPARACIÓN OPCIONAL PARA EL SIGUIENTE CONTENIDO -->
+    <hr class="separator mt-5">
+
+</div>
+{% endblock content %}

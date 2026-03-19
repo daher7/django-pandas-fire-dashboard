@@ -1,0 +1,46 @@
+{% extends "analysis/partials/base.html" %}
+
+{% block title %}Mapa de Incendios - FireWatch AI{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <!-- CABECERA DEL MAPA -->
+    <header class="mapa-header">
+        <div class="status-badge">GEODATA ENGINE ACTIVE</div>
+        <h2>Análisis Geográfico Nacional</h2>
+        <p class="text-muted">Visualización coroplética de la superficie forestal quemada acumulada por provincia.</p>
+    </header>
+
+    <!-- CONTENEDOR DEL MAPA ESTILO DASHBOARD -->
+    <div class="mapa-full">
+        <div class="card-header-flex">
+            <h3 class="grafico-titulo">Mapa de Intensidad (Hectáreas)</h3>
+            <div class="api-status">
+                <span class="dot"></span>
+                <span class="chart-type">GEOJSON OVERLAY</span>
+            </div>
+        </div>
+
+        <div class="grafico-canvas">
+            {% if mapa %}
+                <div class="map-wrapper">
+                    {{ mapa|safe }}
+                </div>
+            {% else %}
+                <div class="error-msg">
+                    <p>⚠️ Error en la sincronización de coordenadas.</p>
+                    <small>No se han podido cargar los datos del mapa.</small>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- LEYENDA INFORMATIVA INFERIOR (Opcional, queda muy pro) -->
+        <div class="map-footer">
+            <div class="footer-item">
+                <span class="bold text-orange">Interactividad:</span> 
+                <span class="text-muted">Usa el scroll para Zoom y arrastra para navegar.</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

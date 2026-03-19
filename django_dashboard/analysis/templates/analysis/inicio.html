@@ -1,0 +1,72 @@
+{% extends "analysis/partials/base.html" %}
+
+{% block content %}
+<div class="dashboard-backdrop">
+    <div class="container">
+        
+        
+<header class="home-header">
+            <div class="status-badge">SISTEMA DE MONITOREO ACTIVO</div>
+            <h1>Análisis de Incendios Forestales en <span class="text-orange">España</span></h1>
+            <p class="text-muted">Visualización de datos históricos y métricas de impacto medioambiental (2010 - 2020).</p>
+        </header>
+
+        
+<div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">Total Incendios (Década)</span>
+                <span class="stat-value">75.120</span> 
+                <div class="stat-bar"></div>
+            </div>
+
+            <div class="stat-card highlight-orange">
+                <span class="stat-label">Superficie Total (ha)</span>
+                <span class="stat-value text-orange">928.451</span>
+                <div class="stat-bar orange"></div>
+            </div>
+
+            <div class="stat-card highlight-green">
+                <span class="stat-label">Estado del Sistema</span>
+                <span class="stat-value text-green">OPERATIVO</span>
+                <div class="stat-bar green"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            
+<div class="tabla-container">
+                <div class="card-title">REGISTROS ANUALES</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>AÑO</th>
+                            <th class="right">INCENDIOS</th>
+                            <th class="right">SUPERFICIE (ha)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data %}
+                        <tr class="row-interactive">
+                            <td><span class="year-label">{{ i.anio }}</span></td>
+                            <td class="right">{{ i.total_incendios }}</td>
+                            <td class="right bold text-orange">{{ i.superficie_total|floatformat:0 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            
+<div class="grafico-card">
+                <div class="card-header-flex">
+                    <h3 class="grafico-titulo">Tendencia de Deforestación por Fuego</h3>
+                    <span class="chart-type">PLOTLY INTERACTIVE</span>
+                </div>
+                <div class="grafico-canvas">
+                    {{ chart_superficie|safe }}
+                </div>
+            </div>
+        </div>
+    </div> 
+</div> 
+{% endblock content %}
