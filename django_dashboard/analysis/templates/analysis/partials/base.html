@@ -9,7 +9,6 @@
     <!-- Fuente moderna para dashboards -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
     
-    <!-- Tu CSS personalizado -->
     <link rel="stylesheet" href="{% static 'analysis/css/style.css' %}">
 </head>
 <body>
@@ -31,19 +30,10 @@
         </div>
     </nav>
 
-    <!-- El bloque content es SOLO para lo que cambia en cada página -->
     <main class="main-container">
         {% block content %}
-        <!-- Aquí se inyectará el contenido de inicio.html, prueba_api, etc. -->
         {% endblock content %}
     </main>
-
-    <!-- Espacio para scripts si los necesitas en el futuro -->
-    {% block extra_js %}{% endblock extra_js %}
-
-
-
-
 
 
     <footer class="main-footer">
@@ -54,14 +44,13 @@
             <p>Análisis de incendios forestales en España (2010-2020). Datos oficiales actualizados.</p>
         </div>
         
-        <!-- Centro: Enlaces rápidos -->
+
         <ul class="footer-links">
             <li><a href="#">Metodología</a></li>
             <li><a href="#">Fuentes</a></li>
             <li><a href="#">Contacto</a></li>
         </ul>
 
-        <!-- Derecha: Copyright / Estado -->
         <div class="footer-bottom-mini">
             <div class="api-status" style="justify-content: flex-end; margin-bottom: 4px;">
                 <span class="dot"></span> Sistema Operativo

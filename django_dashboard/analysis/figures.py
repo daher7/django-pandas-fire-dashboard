@@ -32,12 +32,10 @@ def generar_mapa_provincias(data):
         return "<p>No hay datos disponibles para el mapa</p>"
 
     # 2. LIMPIEZA ABSOLUTA (Basada en tu SELECT)
-    # Tu SQL usa 'provincia' (en minúsculas), nos aseguramos de que Pandas lo lea bien
     if 'provincia' in df.columns:
         df['provincia'] = df['provincia'].astype(str).str.strip()
         
         # Corrección manual para que coincidan con el GeoJSON de Click That Hood
-        # (Asegúrate de que en la DB los nombres sean estos o usa este mapeo)
         mapping = {
             "Vizcaya": "Bizkaia",
             "Guipúzcoa": "Gipuzkoa",
@@ -134,8 +132,6 @@ def generar_grafico_causas(data):
     df = pd.DataFrame(data)
     if df.empty: return ""
     
-    # En tu SQL la columna de suma no tiene alias, suele venir como 'sum' o 'sum(superficie)'
-    # Usamos la posición de la columna si es necesario, pero Plotly suele detectar 'causa'
     fig = px.pie(df, names='causa', values=df.columns[2], # La 3ª columna es el SUM
                  hole=0.4,
                  color_discrete_sequence=px.colors.sequential.Oranges_r)
@@ -149,7 +145,7 @@ def generar_grafico_gravedad(data):
     df = pd.DataFrame(data)
     if df.empty: return ""
     
-    # Creamos un gráfico de doble eje (Barras para total, Línea para media)
+    # Creamos un gráfico de doble eje 
     fig = go.Figure()
     
     fig.add_trace(go.Bar(x=df['anio'], y=df['incendios_totales'], 

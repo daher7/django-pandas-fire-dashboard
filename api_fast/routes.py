@@ -43,7 +43,6 @@ def run_query(
         )
 
     # 3. Control de rendimiento (Forzar LIMIT 100 si no existe)
-    # Quitamos el punto y coma final para poder concatenar el LIMIT sin errores
     query_to_execute = query_clean.rstrip(';')
     
     if "limit" not in query_lower:
@@ -54,7 +53,6 @@ def run_query(
     try:
         conn = get_db()
         # Nota: Se asume que get_db() configura row_factory = sqlite3.Row 
-        # para que dict(row) funcione correctamente.
         cursor = conn.execute(query_to_execute)
         rows = cursor.fetchall()
         

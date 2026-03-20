@@ -16,11 +16,10 @@ def inicio(request):
     response = requests.get(query)
     data = response.json()
     
-    # 2. Llamamos a la función de figures.py pasando los datos de la API
-    # Esto nos devolverá el string HTML/JS del gráfico
+    # Llamamos a la función de figures.py pasando los datos de la API
     chart_div = generar_grafico_principal(data)
 
-    # 3. Añadimos el gráfico al contexto para que llegue al HTML
+    # Añadimos el gráfico al contexto para que llegue al HTML
     contexto = {
         'data': data,
         'chart_superficie': chart_div,
@@ -30,11 +29,11 @@ def inicio(request):
 
 
 def mostrar_mapa(request):
-    # Llamas a tu API (ejemplo: sumatorio superficie por provincia)http://127.0.0.1:8000/query?q=SELECT%20%20%20%20%20%20p.PROVINCIA%20as%20provincia%2C%20%20%20%20%2
+
     api_url = "http://127.0.0.1:8000/query?q=SELECT%20%20%20%20%20%20p.IDPROVINCIA%20AS%20idprovincia%2C%20%20%20%20%20p.PROVINCIA%20AS%20provincia%2C%20%20%20%20%20SUM%28i.superficie%29%20AS%20superficie_total_quemada%20FROM%20incendios%20AS%20i%20INNER%20JOIN%20provincias%20AS%20p%20%20%20%20%20%20ON%20p.IDPROVINCIA%20%3D%20i.IDPROVINCIA%20GROUP%20BY%20%20%20%20%20%20p.IDPROVINCIA%2C%20%20%20%20%20%20p.PROVINCIA%20ORDER%20BY%20%20%20%20%20%20p.IDPROVINCIA%3B"
     data = requests.get(api_url).json()
 
-    # Generas el mapa con la función de figures.py
+    # Generación el mapa con la función de figures.py
     mapa_div = generar_mapa_provincias(data)
 
     return render(request, 'analysis/mapa.html', {'mapa': mapa_div})
@@ -42,7 +41,6 @@ def mostrar_mapa(request):
 
 
 def mostrar_estadisticas(request):
-    # Quitamos el 'q=' de aquí porque ya lo traen tus variables
     base_url = "http://127.0.0.1:8000/query?" 
 
     # 1. Tiempo: Evolución anual
