@@ -90,23 +90,26 @@
     <div class="tabla-stats-wrapper">
         <h3 class="text-orange"><i class="fas fa-exclamation-circle me-2"></i> Registro de Mortalidad</h3>
         <p class="text-center text-secondary mb-4">
-            Listado detallado de los siniestros que han ocasionado víctimas mortales, indicando el año de ocurrencia, la provincia afectada y el número total de fallecidos registrados en el evento.
+            Listado detallado de los siniestros que han ocasionado víctimas mortales, indicando el año de ocurrencia, la provincia afectada y el número total de fallecidos registrados en el siniestro.
         </p>
+        <br>
         <div class="tabla-container">
             <table class="table-compact">
                 <thead>
                     <tr>
-                        <th>AÑO</th>
-                        <th>PROVINCIA</th>
-                        <th class="text-right">VÍCTIMAS</th>
+                        <th class="bold">AÑO</th>
+                        <th class="bold">LOCALIDAD</th>
+                        <th class="bold">PROVINCIA</th>
+                        <th class="bold">VÍCTIMAS</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for v in victimas %}
                     <tr>
-                        <td class="bold">{{ v.anio }}</td>
+                        <td class="text-muted">{{ v.anio }}</td>
+                        <td class="text-muted">{{ v.municipio.title }}</td>
                         <td class="text-muted">{{ v.provincia }}</td>
-                        <td class="text-orange bold text-right">{{ v.muertos }}</td>
+                        <td class="text-muted">{{ v.muertos }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

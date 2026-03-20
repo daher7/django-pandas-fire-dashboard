@@ -1,7 +1,8 @@
 from django.shortcuts import render
 
 from analysis.figures import (
-    generar_grafico_principal, 
+    generar_grafico_3d, 
+    generar_lista_principal,
     generar_mapa_provincias,
     generar_grafico_causas, 
     generar_grafico_gravedad,
@@ -12,16 +13,26 @@ import requests
 
 
 def inicio(request):
-    query = 'http://127.0.0.1:8000/query?q=SELECT%20%20%20%20%20%20anio%2C%20%20%20%20%20%20COUNT%28id%29%20AS%20total_incendios%2C%20%20%20%20%20%20SUM%28superficie%29%20AS%20superficie_total%20FROM%20incendios%20WHERE%20anio%20BETWEEN%202010%20AND%202020%20GROUP%20BY%20anio%20ORDER%20BY%20anio%20DESC%3B'
-    response = requests.get(query)
-    data = response.json()
+
     
+    query_tabla = 'http://127.0.0.1:8000/query?q=SELECT%20%20%20%20%20%20anio%2C%20%20%20%20%20%20COUNT%28id%29%20AS%20total_incendios%2C%20%20%20%20%20%20SUM%28superficie%29%20AS%20superficie_total%20FROM%20incendios%20WHERE%20anio%20BETWEEN%202010%20AND%202020%20GROUP%20BY%20anio%20ORDER%20BY%20anio%20DESC%3B'
+    
+    
+    query_grafico = "http://127.0.0.1:8000/query?q=SELECT%20%20%09mes%2C%20%09anio%2C%20%20%09sum%28superficie%29%20AS%20superficie_total%20FROM%20INCENDIOS%20I%20%20WHERE%20anio%20BETWEEN%202010%20AND%202020%20GROUP%20BY%20anio%2C%20mes%3B"
+
+
+    response_tabla = requests.get(query_tabla)
+    data_tabla = response_tabla.json()
+
+    response_grafico = requests.get(query_grafico)
+    data_grafico = response_grafico.json()
+
     # Llamamos a la función de figures.py pasando los datos de la API
-    chart_div = generar_grafico_principal(data)
+    chart_div = generar_grafico_3d(data_grafico)
 
     # Añadimos el gráfico al contexto para que llegue al HTML
     contexto = {
-        'data': data,
+        'data': data_tabla,
         'chart_superficie': chart_div,
     }
 
@@ -46,7 +57,7 @@ def mostrar_estadisticas(request):
     # 1. Tiempo: Evolución anual
     q_tiempo = "q=SELECT%20%20%20%20%20%20anio%2C%20%20%20%20%20%20COUNT%28id%29%20AS%20total_incendios%2C%20%20%20%20%20%20SUM%28superficie%29%20AS%20superficie_total%20FROM%20incendios%20WHERE%20anio%20BETWEEN%201968%20AND%202020%20GROUP%20BY%20anio%20ORDER%20BY%20anio%20ASC%3B"
     data_tiempo = requests.get(base_url + q_tiempo).json() # Sin urllib.parse.quote
-    chart_tiempo = generar_grafico_principal(data_tiempo)
+    chart_tiempo = generar_lista_principal(data_tiempo)
 
     # 2. Calendario: Estacionalidad mensual
     # OJO: Aquí tenías la query de provincias repetida, te pongo la de MESES:
@@ -70,7 +81,7 @@ def mostrar_estadisticas(request):
     chart_top_provincias = generar_grafico_top_provincias(data_prov)
 
     # 6. Tragedia: Víctimas
-    q_vic = "q=SELECT%20i.anio%2C%20i.municipio%2C%20p.provincia%2C%20i.muertos%2C%20i.superficie%20FROM%20incendios%20AS%20i%20INNER%20JOIN%20provincias%20AS%20p%20ON%20i.idprovincia%20%3D%20p.idprovincia%20ORDER%20BY%20i.muertos%20DESC%20%20LIMIT%2010%3B"
+    q_vic = "q=SELECT%20%20%09i.anio%2C%20%09i.municipio%2C%20%09p.provincia%2C%20%09i.muertos%20FROM%20incendios%20i%20%20INNER%20JOIN%20provincias%20p%20%20%20ON%20i.idprovincia%20%3D%20p.idprovincia%20%20ORDER%20BY%20muertos%20DESC%20%20LIMIT%2010%3B"
     victimas = requests.get(base_url + q_vic).json()
 
     contexto = {
