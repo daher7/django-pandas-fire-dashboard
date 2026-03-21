@@ -34,7 +34,6 @@ def generar_grafico_3d(data):
     return opy.plot(fig, auto_open=False, output_type='div', config={'responsive': True})
 
 
-
 def generar_lista_principal(data):
     df = pd.DataFrame(data)
     if df.empty: return ""
@@ -59,31 +58,62 @@ def generar_mapa_provincias(data):
     df = pd.DataFrame(data)
     if df.empty: return "<p>Sin datos</p>"
 
-    # Limpieza y mapeo rápido
-    df['provincia'] = df['provincia'].astype(str).str.strip().replace({
-        "Vizcaya": "Bizkaia", "Guipúzcoa": "Gipuzkoa", 
-        "Guipuzcoa": "Gipuzkoa", "Álava": "Araba/Álava"
-    })
+    # 1. Limpieza radical de tipos (todo a número)
+    df['anio'] = pd.to_numeric(df['anio'], errors='coerce').fillna(0).astype(int)
+    df['idprovincia'] = pd.to_numeric(df['idprovincia'], errors='coerce').fillna(0).astype(int)
+    df['superficie_total'] = pd.to_numeric(df['superficie_total'], errors='coerce').fillna(0.0)
 
+    # Diccionario auxiliar para no perder los nombres de las provincias tras reindexar
+    nombres_map = df.drop_duplicates('idprovincia').set_index('idprovincia')['provincia'].to_dict()
+
+    # 2. Reindexación SEGURA 
+    anios = sorted(df['anio'].unique())
+    ids = sorted(df['idprovincia'].unique())
+    mux = pd.MultiIndex.from_product([anios, ids], names=['anio', 'idprovincia'])
+    
+    # Reindexamos: los huecos nuevos aparecerán como NaN (not a number)
+    df = df.set_index(['anio', 'idprovincia']).reindex(mux).reset_index()
+
+    # 3. Relleno manual de datos faltantes
+    df['superficie_total'] = df['superficie_total'].fillna(0.0)
+    df['provincia'] = df['provincia'].fillna(df['idprovincia'].map(nombres_map))
+    df['provincia'] = df['provincia'].fillna("Desconocida")
+
+    # 4. Formateo para el GeoJSON (1 -> "01")
+    df['id_str'] = df['idprovincia'].apply(lambda x: f"{int(x):02d}")
+
+    # 5. Construcción del mapa
     fig = px.choropleth(
-        df, locations='provincia', color='superficie_total_quemada',
+        df, 
+        locations='id_str', 
+        color='superficie_total',
         geojson="https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/spain-provinces.geojson",
-        featureidkey="properties.name", color_continuous_scale="OrRd",
-        hover_name="provincia"
+        featureidkey="properties.cod_prov", 
+        color_continuous_scale="OrRd",
+        hover_name="provincia", 
+        animation_frame='anio',
+        range_color=[0, 50000] 
     )
 
-    # El truco está aquí: bgcolor='rgba(0,0,0,0)' dentro de geos
+    # 6. Estética y Layout
     fig.update_geos(
-        fitbounds="locations", visible=False, 
-        bgcolor='rgba(0,0,0,0)', showcoastlines=True, coastlinecolor="#334155"
+        fitbounds="locations", 
+        visible=False, 
+        bgcolor='rgba(0,0,0,0)'
     )
 
     fig.update_layout(
-        height=500, margin={"r":0, "t":0, "l":0, "b":0},
+        height=800, 
+        margin={"r":0, "t":30, "l":0, "b":0},
         paper_bgcolor='rgba(0,0,0,0)', 
-        plot_bgcolor='rgba(0,0,0,0)',
         font=dict(color='#f8fafc'),
-        coloraxis_colorbar=dict(title="Ha", thickness=15, len=0.6, x=0.02)
+        sliders=[dict(currentvalue={"prefix": "Año: ", "font": {"color": "#f97316", "size": 18}})],
+        coloraxis_colorbar=dict(
+            title="Hectáreas", 
+            thickness=15, 
+            len=0.5, 
+            x=0.02
+        )
     )
 
     fig.update_traces(marker_line_width=0.5, marker_line_color="#0f172a")

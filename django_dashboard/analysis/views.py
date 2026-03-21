@@ -41,7 +41,7 @@ def inicio(request):
 
 def mostrar_mapa(request):
 
-    api_url = "http://127.0.0.1:8000/query?q=SELECT%20%20%20%20%20%20p.IDPROVINCIA%20AS%20idprovincia%2C%20%20%20%20%20p.PROVINCIA%20AS%20provincia%2C%20%20%20%20%20SUM%28i.superficie%29%20AS%20superficie_total_quemada%20FROM%20incendios%20AS%20i%20INNER%20JOIN%20provincias%20AS%20p%20%20%20%20%20%20ON%20p.IDPROVINCIA%20%3D%20i.IDPROVINCIA%20GROUP%20BY%20%20%20%20%20%20p.IDPROVINCIA%2C%20%20%20%20%20%20p.PROVINCIA%20ORDER%20BY%20%20%20%20%20%20p.IDPROVINCIA%3B"
+    api_url = "http://127.0.0.1:8000/query?q=SELECT%20%20%20%20%20%20i.anio%2C%20%20%20%20%20%20i.idprovincia%2C%20%20%20%20%20%20p.provincia%2C%20%20%20%20%20%20SUM%28i.superficie%29%20AS%20superficie_total%20FROM%20incendios%20i%20%20INNER%20JOIN%20provincias%20p%20ON%20i.idprovincia%20%3D%20p.idprovincia%20%20WHERE%20i.anio%20BETWEEN%202000%20AND%202020%20GROUP%20BY%20i.anio%2C%20i.idprovincia%2C%20p.provincia%20%20ORDER%20BY%20i.anio%20ASC%2C%20superficie_total%20DESC%3B"
     data = requests.get(api_url).json()
 
     # Generación el mapa con la función de figures.py

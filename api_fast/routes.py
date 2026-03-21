@@ -28,7 +28,7 @@ def run_query(
     query_lower = query_clean.lower()
 
     # 2. Filtros de seguridad (Evitar inyecciones maliciosas)
-    forbidden = ["insert", "update", "delete", "drop", "alter", "create", "truncate", "exec", "attach"]
+    forbidden = ["insert", "update", "delete", "drop", "alter", "create", "truncate", "exec", "attach", "benchmark", "sleep"]
     
     if any(word in query_lower for word in forbidden):
         raise HTTPException(
@@ -46,7 +46,7 @@ def run_query(
     query_to_execute = query_clean.rstrip(';')
     
     if "limit" not in query_lower:
-        query_to_execute += " LIMIT 100"
+        query_to_execute += " LIMIT 5000"
 
     # 4. Ejecución en Base de Datos
     conn = None
