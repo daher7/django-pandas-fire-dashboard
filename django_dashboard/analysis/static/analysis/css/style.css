@@ -478,7 +478,6 @@ td {
     z-index: 1;
 }
 
-/* Reutilizamos el estilo de tus cards pero ajustado */
 .fase-card-vertical .fase-card {
     margin: 0;
     flex-grow: 1;
@@ -566,7 +565,7 @@ td {
 }
 
 .stat-value {
-    font-size: 2.5rem; /* Número mucho más grande e impactante */
+    font-size: 2.5rem; 
     font-weight: 900;
     line-height: 1;
     margin-bottom: 15px;
@@ -665,35 +664,3 @@ td {
     }
 }
 
-/* --- FONDO CON IMAGEN Y OVERLAY --- */
-.dashboard-backdrop {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    background-color: var(--bg); /* Asegura el color oscuro de base */
-    overflow: hidden;
-}
-
-.dashboard-backdrop::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    
-    /* Ruta relativa: sale de css/ entra en img/ */
-    background: url('../img/fondo.jpeg') no-repeat center center fixed;
-    background-size: cover;
-    
-    /* TRANSPARENCIA: Aquí controlas qué tanto se ve (0.1 es 10%) */
-    opacity: 0.12; 
-    
-    z-index: 0;
-}
-
-/* Para que el contenido flote por encima del fondo */
-.dashboard-backdrop .container {
-    position: relative;
-    z-index: 1;
-}
